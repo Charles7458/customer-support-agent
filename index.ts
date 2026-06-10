@@ -2,7 +2,7 @@
 export type Theme = 'light' | 'dark';
 
 // ─── Chat / Conversation Types ─────────────────────────────────────────────────
-export type MessageRole = 'CUSTOMER' | 'AI' | 'SUPPORT_AGENT';
+export type MessageRole = 'user' | 'ai';
 export type MessageStatus = 'sent' | 'delivered' | 'read';
 
 export interface TrackingStep {
@@ -41,41 +41,49 @@ export interface AIInsightWidget {
 export type MessageWidget = TrackingWidget | AIInsightWidget;
 
 export interface ChatMessage {
-  id: number | null;
+  id: string;
   role: MessageRole;
-  content: {
-    text : string;
-    order_card?: OrderCard | null;
-    tracking?: { trackingID: string; carrier: string } | null;
-    bullet_list?: string[] | null;
-  }
-  sent_at: Date | string ;
+  content: string;
+  timestamp: string;
+  status?: MessageStatus;
+  orderCard?: OrderCard;
+  widget?: MessageWidget;
+  codeBlock?: { language: string; lines: string[] };
+  bulletList?: string[];
+  suggestedActions?: string[];
 }
 
 export interface Conversation {
   id: string;
   title: string;
-  customer_name: string;
-  agent_name: string | null;
-  created_at: string;
-  updated_at: string;
+  customerName: string;
+  orderId?: string;
+  status: 'active' | 'resolved' | 'pending';
+  messages: ChatMessage[];
+  createdAt: string;
+  updatedAt: string;
 }
-
-// export interface Conversation {
-//   conv_id: string;
-//   status: 'active' | 'resolved' | 'pending';
-//   created_at: string;
-//   updated_at: string;
-// }
 
 // ─── Ticket Types ──────────────────────────────────────────────────────────────
 export type TicketStatus = 'open' | 'pending' | 'closed' | 'resolved';
 export type TicketPriority = 'high' | 'medium' | 'low';
 
+export interface TicketCustomer {
+  id: string;
+  name: string;
+  email: string;
+  avatarInitials: string;
+  avatarColor: string;
+  plan: string;
+  pastTickets: number;
+  openTickets: number;
+}
 
 export interface TicketMessage {
-  content: ChatMessage["content"];
-  sent_at: Date | string;
+  id: string;
+  from: string;
+  content: string;
+  timestamp: string;
 }
 
 export interface AIInsight {
@@ -85,30 +93,29 @@ export interface AIInsight {
 }
 
 export interface Ticket {
-  id: number;
-  ticket_ref: string;
-  conversation_id: string;
-  issue: string;
+  id: string;
+  ticketNumber: string;
+  subject: string;
   status: TicketStatus;
   priority: TicketPriority;
-  customer_name: string;
-  agent_name: string;
-  updated_at: string;
-  created_at: string;
-  last_message: TicketMessage | null
+  customer: TicketCustomer;
+  lastUpdated: string;
+  messages: TicketMessage[];
+  aiInsight?: AIInsight;
+  createdAt: string;
 }
 
 // ─── Mobile Ticket Card ────────────────────────────────────────────────────────
-// export interface MobileTicketCard {
-//   id: string;
-//   ticketNumber: string;
-//   subject: string;
-//   status: TicketStatus;
-//   priority: TicketPriority;
-//   customer_name: string;
-//   agent_name: string;
-//   updated_at: string;
-// }
+export interface MobileTicketCard {
+  id: string;
+  ticketNumber: string;
+  subject: string;
+  status: TicketStatus;
+  priority: TicketPriority;
+  customer: Pick<TicketCustomer, 'name' | 'email' | 'avatarInitials' | 'avatarColor'>;
+  lastUpdated: string;
+  agentInitials?: string;
+}
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 export type NavTab = 'conversations' | 'tickets';
