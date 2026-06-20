@@ -146,7 +146,7 @@ class Track (BaseModel):
 
 class Content(BaseModel):
     text:str
-    tracking: Tracking | None = None
+    tracking: Track | None = None
     order_cards: list[OrderCard] | None = None
     bullet_list: list[str] | None = None
 

@@ -48,7 +48,7 @@ export interface ChatMessage {
     text : string;
     order_cards?: OrderCard[] | null;
     order_card?: OrderCard[] | null;
-    tracking?: { trackingID: string; carrier: string } | null;
+    tracking?: { tracking_id: string; carrier: string } | null;
     bullet_list?: string[] | null;
   }
   sent_at: Date | string ;

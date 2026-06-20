@@ -280,7 +280,7 @@ export function MessageBubble({ message, isMobile, role ,OtherAvatar}: { message
              
 
              
-            {message.content.tracking && <TrackIDBlock trackingID={message.content.tracking?.trackingID} carrier={message.content.tracking?.carrier} />}
+            {message.content.tracking && <TrackIDBlock trackingID={message.content.tracking?.tracking_id} carrier={message.content.tracking?.carrier} />}
 {/*
 
             {message.widget?.type === 'tracking' && <TrackingWidgetCard widget={message.widget} />}
